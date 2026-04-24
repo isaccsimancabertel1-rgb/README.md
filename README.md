@@ -1,6 +1,6 @@
-🔐 Encriptación y Seguridad Informática
+#🔐 **Encriptación y Seguridad Informática**
 
-📄 Descripción
+##📄 Descripción
 
 Este proyecto tiene como objetivo explicar la importancia de la seguridad informática mediante la implementación de técnicas básicas de protección de datos.
 
@@ -9,7 +9,7 @@ Se desarrollan dos enfoques principales:
 Cifrado tipo César para comprender la lógica de la encriptación.
 Uso de hashing con bcrypt y base de datos SQLite para simular un sistema real de autenticación.
 
-📊 Dataset
+##📊 Dataset
 
 No se utiliza un dataset externo.
 
@@ -21,7 +21,7 @@ bcrypt
 sqlite3
 pandas
 
-⚙️ Implementación
+##⚙️ Implementación
 
 El proyecto se divide en dos partes:
 
@@ -119,7 +119,7 @@ password = input("Contraseña: ")
 
 validar_login(usuario, password)
 
-▶️ Ejecución
+##▶️ Ejecución
 
 Instalar dependencias:
 
@@ -137,10 +137,10 @@ Registrar usuarios en una base de datos.
 Proteger contraseñas mediante hashing seguro.
 Validar el acceso correctamente.
 
-👥 Autores
+##👥 Autores
 
-Isacc Simanca Bertel
+###Isacc Simanca Bertel
 
-Laura Milena Sanchez Henao
+###Laura Milena Sanchez Henao
 
-Alexander Loaiza Guapacha
+###Alexander Loaiza Guapacha
