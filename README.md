@@ -138,6 +138,9 @@ Proteger contraseñas mediante hashing seguro.
 Validar el acceso correctamente.
 
 👥 Autores
+
 Isacc Simanca Bertel
+
 Laura Milena Sanchez Henao
+
 Alexander Loaiza Guapacha
