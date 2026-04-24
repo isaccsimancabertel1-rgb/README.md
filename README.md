@@ -1,67 +1,28 @@
-# 🔐 Encriptación y Seguridad Informática
+🔐 Encriptación y Seguridad Informática
+📄 Descripción
 
-## 📄 Descripción
+Este proyecto tiene como objetivo explicar la importancia de la seguridad informática mediante la implementación de técnicas básicas de protección de datos.
 
-Este proyecto tiene como objetivo explicar la importancia de la seguridad informática y demostrar, mediante un ejemplo en Python, cómo funciona la encriptación de datos.
+Se desarrollan dos enfoques principales:
 
-Se busca proteger la información frente a accesos no autorizados, mostrando conceptos básicos como cifrado, claves y validación de acceso.
+Cifrado tipo César para comprender la lógica de la encriptación.
+Uso de hashing con bcrypt y base de datos SQLite para simular un sistema real de autenticación.
+📊 Dataset
 
----
+No se utiliza un dataset externo.
 
-## 🎯 Objetivo
+Los datos son generados dentro del sistema, específicamente usuarios y contraseñas almacenadas en una base de datos SQLite (seguridad.db).
 
-Comprender la importancia de la encriptación en la seguridad informática, identificando sus conceptos básicos y aplicándolos en un programa que protege un mensaje mediante una clave secreta.
+🛠 Tecnologías
+Python
+bcrypt
+sqlite3
+pandas
+⚙️ Implementación
 
----
+El proyecto se divide en dos partes:
 
-## 🧠 Conceptos Teóricos
-
-### 🔑 Encriptación
-
-Es el proceso de convertir un mensaje legible en un formato ilegible utilizando una clave, con el fin de proteger la información.
-
-### 🔐 Tipos de Encriptación
-
-* **Cifrado Simétrico**: Usa una sola clave para encriptar y desencriptar.
-* **Cifrado Asimétrico (RSA)**: Usa dos claves (pública y privada).
-* **Funciones Hash**: Transforman datos en un valor único que no se puede revertir.
-
-### 🌐 Seguridad Informática
-
-Es la disciplina encargada de proteger la información y los sistemas frente a accesos no autorizados.
-
-Se divide en:
-
-* Seguridad de hardware
-* Seguridad de software
-* Seguridad de red
-
----
-
-## ⚙️ Implementación
-
-El programa implementa un **cifrado simétrico tipo César**, donde:
-
-1. Se define un mensaje secreto.
-2. Se aplica una clave numérica.
-3. Cada letra se transforma usando:
-
-   * `ord()` → convierte letra a número
-   * `chr()` → convierte número a letra
-4. Se genera un mensaje encriptado.
-5. Se solicita al usuario la clave.
-6. Si la clave es correcta:
-
-   * Se desencripta el mensaje
-7. Si es incorrecta:
-
-   * Se niega el acceso
-
----
-
-## 💻 Código principal
-
-```python
+🔐 1. Cifrado César (Simétrico)
 mensaje_secreto = "ESTO ES UN SECRETO"
 llave_real = 5
 
@@ -71,6 +32,7 @@ for letra in mensaje_secreto:
 
 print("--- SISTEMA DE SEGURIDAD ACTIVADO ---")
 print(f"Mensaje encriptado recibido: {mensaje_encriptado}")
+print("-------------------------------------")
 
 intento_llave = int(input("Ingrese la llave: "))
 
@@ -81,50 +43,97 @@ if intento_llave == llave_real:
     print(f"Mensaje: {mensaje_final}")
 else:
     print("Acceso denegado")
-```
+🗄️ 2. Base de datos (SQLite)
+import sqlite3
 
----
+conexion = sqlite3.connect('seguridad.db')
+cursor = conexion.cursor()
 
-## ▶️ Ejecución
+cursor.execute('DROP TABLE IF EXISTS Usuarios')
 
-Para ejecutar el programa:
+cursor.execute('''
+    CREATE TABLE Usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        password_hash BLOB NOT NULL
+    )
+''')
 
-```bash
+conexion.commit()
+conexion.close()
+👤 3. Registro de usuarios (bcrypt)
+import bcrypt
+
+def registrar_usuario(nombre_usuario, clave_plana):
+    sal = bcrypt.gensalt()
+    hash_encriptado = bcrypt.hashpw(clave_plana.encode('utf-8'), sal)
+
+    conexion = sqlite3.connect('seguridad.db')
+    cursor = conexion.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO Usuarios (nombre, password_hash) VALUES (?, ?)",
+            (nombre_usuario, hash_encriptado)
+        )
+        conexion.commit()
+        print(f"Usuario '{nombre_usuario}' registrado con éxito.")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+    finally:
+        conexion.close()
+🔑 4. Validación de login
+def validar_login(nombre_usuario, clave_intento):
+    conexion = sqlite3.connect('seguridad.db')
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT password_hash FROM Usuarios WHERE nombre = ?",
+        (nombre_usuario,)
+    )
+
+    resultado = cursor.fetchone()
+    conexion.close()
+
+    if resultado:
+        hash_guardado = resultado[0]
+
+        if bcrypt.checkpw(clave_intento.encode('utf-8'), hash_guardado):
+            print(f"Acceso concedido. Bienvenido, {nombre_usuario}.")
+        else:
+            print("Contraseña incorrecta.")
+    else:
+        print("El usuario no existe.")
+🧪 5. Prueba del sistema
+registrar_usuario("analista_juan", "MiClaveSegura123")
+registrar_usuario("laura", "1234567890")
+registrar_usuario("alex", "1234567890")
+
+usuario = input("Usuario: ")
+password = input("Contraseña: ")
+
+validar_login(usuario, password)
+▶️ Ejecución
+
+Instalar dependencias:
+
+pip install bcrypt pandas
+
+Ejecutar el programa:
+
 python main.py
-```
+📈 Resultados
 
----
+El sistema permite:
 
-## 📊 Resultados
+Encriptar y desencriptar mensajes.
+Registrar usuarios en una base de datos.
+Proteger contraseñas mediante hashing seguro.
+Validar el acceso correctamente.
 
-El sistema:
-
-* Protege un mensaje mediante encriptación
-* Solicita una clave para acceder
-* Permite ver el mensaje solo si la clave es correcta
-
-Esto demuestra cómo funciona la seguridad básica en sistemas informáticos.
-
----
-
-## ⚠️ Limitaciones
-
-* El cifrado tipo César es simple y no es seguro en la vida real
-* No protege contra ataques avanzados
-* Solo se usa con fines educativos
-
----
-
-## 🔗 Cibergrafía
-
-* https://www.redeszone.net/tutoriales/seguridad/criptografia-algoritmos-hash/
-* https://www.cloudflare.com/es-es/learning/ssl/what-is-encryption/
-* https://www.huntress.com/cybersecurity-101/topic/what-is-symmetric-encryption-algorithms
-
----
-
-## 👥 Autores
-
-* Isacc Simanca Bertel
-* Laura Milena Sanchez Henao
-* Alexander Loaiza Guapacha
+👥 Autores
+Isacc Simanca Bertel
+Laura Milena Sanchez Henao
+Alexander Loaiza Guapacha
