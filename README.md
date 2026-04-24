@@ -1,31 +1,36 @@
-#🔐 **Encriptación y Seguridad Informática**
+# 🔐 **Encriptación y Seguridad Informática**
 
-##📄 Descripción
+## 📄 Descripción
 
-Este proyecto tiene como objetivo explicar la importancia de la seguridad informática mediante la implementación de técnicas básicas de protección de datos.
+Este proyecto tiene como objetivo explicar la importancia de la seguridad informática y la encriptación en la protección de la información. Hoy en día, los datos son un recurso valioso, por lo que es fundamental evitar accesos no autorizados.
 
-Se desarrollan dos enfoques principales:
+Se presentan conceptos clave como el cifrado simétrico, asimétrico y las funciones hash, así como las principales áreas de la seguridad informática: hardware, software y red.
 
-Cifrado tipo César para comprender la lógica de la encriptación.
-Uso de hashing con bcrypt y base de datos SQLite para simular un sistema real de autenticación.
+En la parte práctica, se implementa un cifrado César para comprender el funcionamiento básico de la encriptación y un sistema más avanzado de autenticación que utiliza bcrypt y SQLite, demostrando cómo se protegen las contraseñas en aplicaciones reales.
 
-##📊 Dataset
+## 📊 Dataset
 
 No se utiliza un dataset externo.
 
 Los datos son generados dentro del sistema, específicamente usuarios y contraseñas almacenadas en una base de datos SQLite (seguridad.db).
 
-🛠 Tecnologías
-Python
-bcrypt
-sqlite3
-pandas
 
-##⚙️ Implementación
+## 🛠 Tecnologías
 
-El proyecto se divide en dos partes:
+- [Python](https://www.python.org/)
+- [bcrypt](https://pypi.org/project/bcrypt/)
+- [sqlite3](https://docs.python.org/3/library/sqlite3.html)
+- [pandas](https://pandas.pydata.org/)
 
-🔐 1. Cifrado César (Simétrico)
+## ⚙️ Implementación
+
+El proyecto se divide en dos partes principales:
+
+---
+
+### 🔐 1. Cifrado César (Simétrico)
+
+```python
 mensaje_secreto = "ESTO ES UN SECRETO"
 llave_real = 5
 
@@ -46,7 +51,13 @@ if intento_llave == llave_real:
     print(f"Mensaje: {mensaje_final}")
 else:
     print("Acceso denegado")
-🗄️ 2. Base de datos (SQLite)
+```
+
+---
+
+### 🗄️ 2. Base de Datos (SQLite)
+
+```python
 import sqlite3
 
 conexion = sqlite3.connect('seguridad.db')
@@ -64,8 +75,15 @@ cursor.execute('''
 
 conexion.commit()
 conexion.close()
-👤 3. Registro de usuarios (bcrypt)
+```
+
+---
+
+### 👤 3. Registro de Usuarios (bcrypt)
+
+```python
 import bcrypt
+import sqlite3
 
 def registrar_usuario(nombre_usuario, clave_plana):
     sal = bcrypt.gensalt()
@@ -87,7 +105,16 @@ def registrar_usuario(nombre_usuario, clave_plana):
 
     finally:
         conexion.close()
-🔑 4. Validación de login
+```
+
+---
+
+### 🔑 4. Validación de Login
+
+```python
+import sqlite3
+import bcrypt
+
 def validar_login(nombre_usuario, clave_intento):
     conexion = sqlite3.connect('seguridad.db')
     cursor = conexion.cursor()
@@ -109,7 +136,13 @@ def validar_login(nombre_usuario, clave_intento):
             print("Contraseña incorrecta.")
     else:
         print("El usuario no existe.")
-🧪 5. Prueba del sistema
+```
+
+---
+
+### 🧪 5. Prueba del Sistema
+
+```python
 registrar_usuario("analista_juan", "MiClaveSegura123")
 registrar_usuario("laura", "1234567890")
 registrar_usuario("alex", "1234567890")
@@ -118,29 +151,43 @@ usuario = input("Usuario: ")
 password = input("Contraseña: ")
 
 validar_login(usuario, password)
+```
 
-##▶️ Ejecución
+## ▶️ Ejecución
 
-Instalar dependencias:
+Para ejecutar el proyecto, sigue estos pasos:
 
+### 📦 1. Instalar dependencias
+
+```bash
 pip install bcrypt pandas
+```
 
-Ejecutar el programa:
+---
 
+### ▶️ 2. Ejecutar el programa
+
+```bash
 python main.py
-📈 Resultados
+```
 
-El sistema permite:
+---
 
-Encriptar y desencriptar mensajes.
-Registrar usuarios en una base de datos.
-Proteger contraseñas mediante hashing seguro.
-Validar el acceso correctamente.
+## 📈 Resultados
 
-##👥 Autores
+El sistema desarrollado permite:
 
-###Isacc Simanca Bertel
+- 🔐 Encriptar y desencriptar mensajes mediante el cifrado César.
+- 👤 Registrar usuarios en una base de datos SQLite.
+- 🔒 Proteger contraseñas utilizando hashing seguro con bcrypt.
+- ✅ Validar el acceso de usuarios de forma segura.
 
-###Laura Milena Sanchez Henao
+Además, se evidencia la diferencia entre un método de cifrado básico y técnicas modernas utilizadas en sistemas reales de seguridad informática.
 
-###Alexander Loaiza Guapacha
+## 👥 Autores
+
+* **Isacc Simanca Bertel**
+
+* **Laura Milena Sanchez Henao**
+
+* **Alexander Loaiza Guapacha**
